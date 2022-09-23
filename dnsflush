@@ -1,0 +1,32 @@
+#! /bin/bash
+# node.js fast and cloudflare install required
+# now add this file in /home/username/bin folder make sure you added in $PATH
+# RUN THIS SCRIPT WITH chmod +x ./speedtest
+# Reset BASH time counter
+res1=$(date +%s.%N)
+#===============================#  
+PURPLE='\033[0;35m'    
+CYAN='\033[0;36m'    
+WHITE='\033[1;37m'
+SET='\033[0m'
+#===============================#
+#DNS FLush
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+echo -e "${WHITE}DNS Flush${SET}"
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+sudo systemd-resolve --flush-caches
+sudo resolvectl flush-caches
+#===============================
+#Time Calc
+res2=$(date +%s.%N)
+dt=$(echo "$res2 - $res1" | bc)
+dd=$(echo "$dt/86400" | bc)
+dt2=$(echo "$dt-86400*$dd" | bc)
+dh=$(echo "$dt2/3600" | bc)
+dt3=$(echo "$dt2-3600*$dh" | bc)
+dm=$(echo "$dt3/60" | bc)
+ds=$(echo "$dt3-60*$dm" | bc)
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+LC_NUMERIC=C printf "${WHITE}Total runtime: %d:%02d:%02d:%02.4f\n${SET}" $dd $dh $dm $ds
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+

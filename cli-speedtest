@@ -1,0 +1,63 @@
+#! /bin/bash
+# node.js fast and cloudflare install required
+# now add this file in /home/username/bin folder make sure you added in $PATH
+# RUN THIS SCRIPT WITH chmod +x ./speedtest
+# Reset BASH time counter
+res1=$(date +%s.%N)
+#===============================#  
+PURPLE='\033[0;35m'    
+CYAN='\033[0;36m'    
+WHITE='\033[1;37m'
+SET='\033[0m'
+#===============================#
+ip=$(curl -s ipinfo.io/ip)
+hostname=$(curl -s ipinfo.io/hostname)
+city=$(curl -s ipinfo.io/city)
+region=$(curl -s ipinfo.io/region)
+country=$(curl -s ipinfo.io/country)
+org=$(curl -s ipinfo.io/org)
+postal=$(curl -s ipinfo.io/postal)
+timezone=$(curl -s ipinfo.io/timezone)
+loc=$(curl -s ipinfo.io/loc)
+#===============================
+#ISP INFO
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+echo -e "${WHITE}More Information about ISP.${SET}"
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+echo -e "${PURPLE}IPv4 :${SET} ${ip}"
+echo -e "${PURPLE}HOSTNAME :${SET} ${hostname}"
+echo -e "${PURPLE}CITY :${SET} ${city}"
+echo -e "${PURPLE}REGION :${SET} ${region}"
+echo -e "${PURPLE}COUNTRY :${SET} ${country}"
+echo -e "${PURPLE}ORG :${SET} ${org}"
+echo -e "${PURPLE}POSTAL-CODE :${SET} ${postal}"
+echo -e "${PURPLE}TIMEZONE :${SET} ${timezone}"
+echo -e "${PURPLE}LOCATION :${SET} ${loc}"
+#===============================
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+echo -e "${WHITE}Cloudflare + Ookla + Fast Speed-test cli for linux.${SET}"
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+npx speed-cloudflare-cli
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+speedtest-cli --secure
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+fast --single-line --upload
+#===============================
+#Time Calc
+res2=$(date +%s.%N)
+dt=$(echo "$res2 - $res1" | bc)
+dd=$(echo "$dt/86400" | bc)
+dt2=$(echo "$dt-86400*$dd" | bc)
+dh=$(echo "$dt2/3600" | bc)
+dt3=$(echo "$dt2-3600*$dh" | bc)
+dm=$(echo "$dt3/60" | bc)
+ds=$(echo "$dt3-60*$dm" | bc)
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+LC_NUMERIC=C printf "${WHITE}Total runtime: %d:%02d:%02d:%02.4f\n${SET}" $dd $dh $dm $ds
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+echo -e "${WHITE}🟢 Excellent (≤02:15)${SET}"
+echo -e "${WHITE}🟡 Good (≤02:15 ~ ≤02:30)${SET}"
+echo -e "${WHITE}🔴 Poor (≥02:30 +)${SET}"
+echo -e "${CYAN}-----------------------------------------------------------------${SET}"
+
+
